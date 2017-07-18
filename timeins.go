@@ -1,6 +1,9 @@
 package timeins
 
-import "time"
+import (
+	"strings"
+	"time"
+)
 
 const F string = "2006-01-02T15:04:05-07:00"
 
@@ -20,7 +23,7 @@ func (t Time) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Time) UnmarshalJSON(data []byte) error {
-	tt, err := time.Parse(F, string(data))
+	tt, err := time.Parse(F, strings.Trim(string(data), `"`))
 	*t = Time(tt)
 	return err
 }

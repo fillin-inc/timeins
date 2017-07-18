@@ -83,18 +83,21 @@ func TestMarshalJSON(t *testing.T) {
 }
 
 type unmarshalTest struct {
-	time   string
-	hasErr bool
+	time     string
+	expected string
+	hasErr   bool
 }
 
 func TestUnmarshalJSON(t *testing.T) {
 	tests := []unmarshalTest{
 		{
-			"2006-01-02T15:04:05-07:00",
+			`"2006-01-02T15:04:05-07:00"`,
+			`2006-01-02T15:04:05-07:00`,
 			false,
 		},
 		{
-			"2016-10-20T12:32:02+09:00",
+			`"2016-10-20T12:32:02+09:00"`,
+			`2016-10-20T12:32:02+09:00`,
 			false,
 		},
 	}
@@ -109,11 +112,11 @@ func TestUnmarshalJSON(t *testing.T) {
 			t.Errorf("#%d MarshalJSON() should not return error(err:%s)", i, err.Error())
 		}
 
-		if test.time != tis.String() {
+		if test.expected != tis.String() {
 			t.Errorf(
 				"#%d MarshalJSON() returned unexpected value(expected:%s actual:%s)",
 				i,
-				test.time,
+				test.expected,
 				tis.String(),
 			)
 		}
