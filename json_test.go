@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type structToJsonTest struct {
+type structToJSONTest struct {
 	time     string
 	expected string
 }
@@ -16,7 +16,7 @@ type ts1 struct {
 }
 
 func TestStructToJSON(t *testing.T) {
-	tests := []structToJsonTest{
+	tests := []structToJSONTest{
 		{
 			"2017-07-18T21:20:15+09:00",
 			`{"created_at":"2017-07-18T21:20:15+09:00"}`,
@@ -54,7 +54,7 @@ type jsonToStructTest struct {
 	expected string
 }
 
-func TestJsonToStruct(t *testing.T) {
+func TestJSONToStruct(t *testing.T) {
 	tests := []jsonToStructTest{
 		{
 			`{"created_at":"2017-07-18T21:20:15+09:00"}`,

@@ -133,7 +133,7 @@ func BenchmarkParse(b *testing.B) {
 func BenchmarkString(b *testing.B) {
 	now := Time(time.Now())
 	for i := 0; i < b.N; i++ {
-		now.String()
+		_ = now.String()
 	}
 }
 
