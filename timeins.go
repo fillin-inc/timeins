@@ -17,10 +17,6 @@ func Parse(value string) (Time, error) {
 	return Time(tt), err
 }
 
-func (t Time) String() string {
-	return time.Time(t).Format(F)
-}
-
 // MarshalJSON is a method used when converting timeins.Time type to JSON
 func (t Time) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + t.String() + `"`), nil
@@ -31,4 +27,9 @@ func (t *Time) UnmarshalJSON(data []byte) error {
 	tt, err := time.Parse(F, strings.Trim(string(data), `"`))
 	*t = Time(tt)
 	return err
+}
+
+// String returns a time string of the format specified by F
+func (t Time) String() string {
+	return time.Time(t).Format(F)
 }
