@@ -7,7 +7,8 @@ branches:
     - feature/*
 go:
   - 1.7.6
-  - 1.8.3
+  - 1.8.4
+  - 1.9.1
   - tip
 install:
   - go get -u github.com/golang/lint/golint
