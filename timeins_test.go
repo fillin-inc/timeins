@@ -124,9 +124,12 @@ func TestUnmarshalJSON(t *testing.T) {
 }
 
 func BenchmarkParse(b *testing.B) {
-	str := "2017-07-16T07:10:20Z"
+	str := "2017-07-16T07:10:20+00:00"
 	for i := 0; i < b.N; i++ {
-		Parse(str)
+		_, err := Parse(str)
+		if err != nil {
+			b.Error(err)
+		}
 	}
 }
 
@@ -140,7 +143,10 @@ func BenchmarkString(b *testing.B) {
 func BenchmarkMarshalJSON(b *testing.B) {
 	now := Time(time.Now())
 	for i := 0; i < b.N; i++ {
-		now.MarshalJSON()
+		_, err := now.MarshalJSON()
+		if err != nil {
+			b.Error(err)
+		}
 	}
 }
 
@@ -148,6 +154,9 @@ func BenchmarkUnmarshalJSON(b *testing.B) {
 	tt := Time{}
 	tb := []byte("2017-07-16T07:10:20+09:00")
 	for i := 0; i < b.N; i++ {
-		tt.UnmarshalJSON(tb)
+		err := tt.UnmarshalJSON(tb)
+		if err != nil {
+			b.Error(err)
+		}
 	}
 }
