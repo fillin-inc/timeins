@@ -6,12 +6,11 @@ setup:
 
 ## test
 test:
-	go test -v -cover .
+	go test -v -cover ./...
 
 ## lint
 lint:
-	golint .
-	go vet .
+	golangci-lint run ./...
 
 ## benchmark
 benchmark:
