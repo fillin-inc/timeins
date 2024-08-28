@@ -1,21 +1,11 @@
-## setup
-setup:
-	go get github.com/golang/lint/golint
-	go get github.com/Songmu/make2help/cmd/make2help
-	go get -u -v github.com/mattn/go-colorable
-
-## test
-test:
+test: ## test
 	go test -v -cover ./...
 
-## lint
-lint:
+lint: ## lint
 	golangci-lint run ./...
 
-## benchmark
-benchmark:
+benchmark: ## benchmark
 	go test -bench . -benchmem
 
-## help
-help:
-	@make2help $(MAKEFILE_LIST)
+help: ## help
+	@grep -E '^[[:alnum:]_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
