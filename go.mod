@@ -1,3 +1,3 @@
 module github.com/fillin-inc/timeins
 
-go 1.13
+go 1.20
