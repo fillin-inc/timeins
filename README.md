@@ -33,6 +33,10 @@ func main() {
 }
 ```
 
+## Development
+
+This project uses `.editorconfig` to maintain consistent coding styles across different editors and IDEs. Most modern editors support EditorConfig automatically or through plugins.
+
 ## License
 
 MIT License. see [LICENSE](https://github.com/fillin-inc/timeins/blob/master/LICENSE) file.
