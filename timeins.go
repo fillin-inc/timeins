@@ -16,7 +16,7 @@
 package timeins
 
 import (
-	"strings"
+	"strconv"
 	"time"
 )
 
@@ -58,16 +58,19 @@ func (t Time) MarshalJSON() ([]byte, error) {
 // It parses a JSON time string in ISO8601 format.
 // This method is automatically called by json.Unmarshal.
 func (t *Time) UnmarshalJSON(data []byte) error {
-	if len(data) < 2 || data[0] != '"' || data[len(data)-1] != '"' {
+	// Use strconv.Unquote to properly handle JSON-escaped strings
+	timeStr, err := strconv.Unquote(string(data))
+	if err != nil {
 		return &time.ParseError{
 			Layout: ISO8601Format,
 			Value:  string(data),
 			LayoutElem: "quoted string",
 			ValueElem: string(data),
+			Message: "invalid JSON string",
 		}
 	}
 
-	tt, err := time.Parse(ISO8601Format, strings.Trim(string(data), `"`))
+	tt, err := time.Parse(ISO8601Format, timeStr)
 	if err != nil {
 		return err
 	}

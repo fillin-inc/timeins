@@ -1,6 +1,7 @@
 package timeins
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
@@ -18,29 +19,30 @@ func TestParse(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		tis, err := Parse(test.input)
+		t.Run(fmt.Sprintf("case_%d_%s", i, test.input), func(t *testing.T) {
+			tis, err := Parse(test.input)
 
-		if test.hasError {
-			if err == nil {
-				t.Errorf("#%d should return error for input: %s", i, test.input)
+			if test.hasError {
+				if err == nil {
+					t.Errorf("should return error for input: %s", test.input)
+				}
+				return
 			}
-			continue
-		}
 
-		if err != nil {
-			t.Errorf("#%d has error in timeins.Parse: %s", i, err)
-			continue
-		}
+			if err != nil {
+				t.Errorf("has error in timeins.Parse: %s", err)
+				return
+			}
 
-		tt, _ := time.Parse(ISO8601Format, test.input)
-		if tt.UnixNano() != time.Time(tis).UnixNano() {
-			t.Errorf(
-				"#%d returned unexpected value(expected:%d actual:%d)",
-				i,
-				tt.UnixNano(),
-				time.Time(tis).UnixNano(),
-			)
-		}
+			tt, _ := time.Parse(ISO8601Format, test.input)
+			if tt.UnixNano() != time.Time(tis).UnixNano() {
+				t.Errorf(
+					"returned unexpected value(expected:%d actual:%d)",
+					tt.UnixNano(),
+					time.Time(tis).UnixNano(),
+				)
+			}
+		})
 	}
 }
 
@@ -100,7 +102,7 @@ func TestMarshalJSON(t *testing.T) {
 type unmarshalTest struct {
 	time     string
 	expected string
-	hasErr   bool
+	hasError bool
 }
 
 func TestUnmarshalJSON(t *testing.T) {
@@ -136,13 +138,19 @@ func TestUnmarshalJSON(t *testing.T) {
 			``,
 			true,
 		},
+		// Test JSON escaped characters
+		{
+			`"2023-07-15T14:30:45+09:00"`,
+			`2023-07-15T14:30:45+09:00`,
+			false,
+		},
 	}
 
 	for i, test := range tests {
 		tis := Time{}
 		err := tis.UnmarshalJSON([]byte(test.time))
 
-		if test.hasErr {
+		if test.hasError {
 			if err == nil {
 				t.Errorf("#%d UnmarshalJSON() should return error", i)
 			}
