@@ -12,7 +12,7 @@ RUN apk add --no-cache git make
 RUN go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 
 # Go modulesの依存関係をダウンロード
-COPY go.mod go.sum ./
+COPY go.mod ./
 RUN go mod download
 
 # ソースコードをコピー
@@ -29,7 +29,7 @@ WORKDIR /app
 RUN apk add --no-cache git
 
 # Go modulesの依存関係をダウンロード
-COPY go.mod go.sum ./
+COPY go.mod ./
 RUN go mod download
 
 # ソースコードをコピー
