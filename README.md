@@ -122,19 +122,6 @@ func main() {
 - **Comprehensive Error Handling**: Proper error handling for invalid time formats
 - **High Performance**: Optimized JSON marshaling with minimal allocations
 - **100% Test Coverage**: Thoroughly tested with comprehensive test suite
-
-## API Reference
-
-### Types
-
-- `timeins.Time` - Wraps `time.Time` with custom JSON marshaling
-
-### Functions
-
-- `Parse(value string) (Time, error)` - Parses ISO8601 time string
-- `(t Time) String() string` - Returns formatted time string
-- `(t Time) MarshalJSON() ([]byte, error)` - JSON marshaler
-- `(t *Time) UnmarshalJSON(data []byte) error` - JSON unmarshaler
 ## Development
 
 ### Prerequisites
@@ -163,11 +150,20 @@ make test && make lint
 This project includes Docker support for consistent development environments:
 
 ```bash
-# Build and run tests in container
-docker-compose up --build
+# Build Docker image
+make docker-build
+
+# Run tests in container
+make docker-test
+
+# Run linter in container
+make docker-lint
+
+# Run benchmarks in container
+make docker-benchmark
 
 # Interactive development
-docker-compose run --rm dev bash
+make docker-dev
 ```
 
 ### Code Style

@@ -31,14 +31,20 @@ go test -v timeins_test.go timeins.go
 
 ### Docker開発環境
 ```bash
+# Dockerイメージのビルド
+make docker-build
+
 # コンテナでテスト実行
-docker-compose up --build
+make docker-test
+
+# コンテナでリント実行
+make docker-lint
+
+# コンテナでベンチマーク実行
+make docker-benchmark
 
 # インタラクティブ開発環境
-docker-compose run --rm dev bash
-
-# コンテナ内でのテスト実行
-docker-compose run --rm dev make test
+make docker-dev
 ```
 
 ### Goバージョン
