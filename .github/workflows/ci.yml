@@ -48,5 +48,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Check EditorConfig
-      uses: editorconfig-checker/action-editorconfig-checker@main
+    - uses: editorconfig-checker/action-editorconfig-checker@main
+    - name: Run EditorConfig Checker
+      run: editorconfig-checker

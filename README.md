@@ -12,24 +12,24 @@ If the `time.Time` type is included in the structure for response, when returnin
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"time"
+  "encoding/json"
+  "fmt"
+  "time"
 
-	"github.com/fillin-inc/timeins"
+  "github.com/fillin-inc/timeins"
 )
 
 type res struct {
-	CreatedAt timeins.Time
+  CreatedAt timeins.Time
 }
 
 func main() {
-	r := res{
-		CreatedAt: timeins.Time(time.Now()),
-	}
+  r := res{
+    CreatedAt: timeins.Time(time.Now()),
+  }
 
-	marshaled, _ := json.Marshal(r)
-	fmt.Println(string(marshaled))
+  marshaled, _ := json.Marshal(r)
+  fmt.Println(string(marshaled))
 }
 ```
 
