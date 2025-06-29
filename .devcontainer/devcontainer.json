@@ -31,7 +31,7 @@
   },
 
   // コンテナ作成後に実行するコマンド
-  "postCreateCommand": "go mod download && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest",
+  "postCreateCommand": "go mod download && go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.54.2",
 
   // ポートフォワーディング（将来的にHTTPサーバーを追加する場合）
   "forwardPorts": [],
