@@ -19,11 +19,32 @@ make lint
 # ベンチマーク実行
 make benchmark
 
+# 全チェック実行
+make test && make lint
+
 # 特定のテストを実行
 go test -v -run TestFunctionName
 
 # 特定のファイルのテストを実行
 go test -v timeins_test.go timeins.go
+```
+
+### Docker開発環境
+```bash
+# Dockerイメージのビルド
+make docker-build
+
+# コンテナでテスト実行
+make docker-test
+
+# コンテナでリント実行
+make docker-lint
+
+# コンテナでベンチマーク実行
+make docker-benchmark
+
+# インタラクティブ開発環境
+make docker-dev
 ```
 
 ### Goバージョン
