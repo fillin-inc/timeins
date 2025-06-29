@@ -29,6 +29,7 @@ go test -v timeins_test.go timeins.go
 ### Goバージョン
 - 最小Goバージョン: 1.21
 - CI環境でのテスト対象: 1.21.x, 1.22.x, 1.23.x
+- セキュリティサポート: 最新2バージョンを推奨（現在は1.22.x, 1.23.x）
 
 ## アーキテクチャ
 
@@ -38,28 +39,36 @@ go test -v timeins_test.go timeins.go
 - `timeins_test.go` - Time型機能の単体テスト
 - `json_test.go` - JSONマーシャリング/アンマーシャリングの統合テスト
 
-主な設計方針：
+主な設計方針（2024年12月更新）：
 - `Time`型は`time.Time`を埋め込み、標準の時刻機能を継承
-- `MarshalJSON`で秒単位に切り捨ててRFC3339形式でフォーマット
-- `UnmarshalJSON`は柔軟性のため様々な時刻形式を受け入れ
-- すべてのメソッドは新しいTimeインスタンスを返すことで不変性を保持
+- `MarshalJSON`で秒精度のISO8601形式でフォーマット（`ISO8601Format`定数使用）
+- `UnmarshalJSON`で堅牢なエラーハンドリングと入力検証を実装
+- パフォーマンス最適化: `AppendFormat`によるメモリアロケーション削減
+- 包括的なGoDocドキュメント付きの公開API
 
 ## テスト方針
 
 テーブル駆動テストを広範囲に使用。新機能追加時：
 1. 関連するテストテーブルにテストケースを追加
-2. 正常系と異常系の両方のテストケースをカバー
-3. ベンチマークを実行してパフォーマンス低下がないことを確認
+2. 正常系と異常系（エラーケース）の両方のテストケースをカバー
+3. `Parse`と`UnmarshalJSON`の無効入力に対するエラーハンドリングテスト
+4. ベンチマークを実行してパフォーマンス低下がないことを確認
+5. テストカバレッジ100%を維持
 
 ## CI/CD
 
 GitHub Actionsがプッシュごとに自動実行：
 - マルチプラットフォームテスト（Ubuntu、macOS、Windows）
-- 複数のGoバージョンでのテスト
+- 複数のGoバージョンでのテスト（1.21.x, 1.22.x, 1.23.x）
 - golangci-lintでのリント
 - ベンチマーク実行
+- EditorConfigチェック
 
 ワークフローは`.github/workflows/ci.yml`で定義。
+
+### ステータスバッジ
+- CI: [![CI](https://github.com/fillin-inc/timeins/actions/workflows/ci.yml/badge.svg)](https://github.com/fillin-inc/timeins/actions/workflows/ci.yml)
+- Go Reference: [![Go Reference](https://pkg.go.dev/badge/github.com/fillin-inc/timeins.svg)](https://pkg.go.dev/github.com/fillin-inc/timeins)
 
 ## 開発フロー（GitHub Flow）
 
