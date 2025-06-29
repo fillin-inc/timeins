@@ -2,11 +2,14 @@
 # 開発環境とプロダクション環境の両方に対応
 
 # 開発環境
-FROM golang:1.20-alpine AS dev
+FROM golang:1.20 AS dev
 WORKDIR /app
 
 # 開発に必要なツールをインストール
-RUN apk add --no-cache git make
+RUN apt-get update && apt-get install -y \
+    git \
+    make \
+    && rm -rf /var/lib/apt/lists/*
 
 # golangci-lintをインストール（Go 1.20対応バージョン）
 RUN go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.54.2

@@ -1,9 +1,10 @@
 {
   "name": "Timeins Go Dev Container",
-  "dockerComposeFile": "../compose.yml",
-  "service": "dev",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "target": "dev"
+  },
   "workspaceFolder": "/app",
-  "shutdownAction": "stopCompose",
 
   // VS Code設定
   "customizations": {
@@ -29,5 +30,11 @@
   },
 
   // コンテナ作成後に実行するコマンド
-  "postCreateCommand": "go mod download"
+  "postCreateCommand": "go mod download",
+
+  // 環境変数
+  "containerEnv": {
+    "GO111MODULE": "on",
+    "CGO_ENABLED": "0"
+  }
 }
