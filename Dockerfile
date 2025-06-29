@@ -8,8 +8,8 @@ WORKDIR /app
 # 開発に必要なツールをインストール
 RUN apk add --no-cache git make
 
-# golangci-lintをインストール
-RUN go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+# golangci-lintをインストール（Go 1.20対応バージョン）
+RUN go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.54.2
 
 # Go modulesの依存関係をダウンロード
 COPY go.mod ./
