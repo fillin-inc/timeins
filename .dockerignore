@@ -4,9 +4,6 @@
 
 # 開発環境関連
 .devcontainer
-docker-compose.yml
-.dockerignore
-Dockerfile
 
 # IDE/エディタ関連
 .vscode

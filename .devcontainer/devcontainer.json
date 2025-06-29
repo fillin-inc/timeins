@@ -1,6 +1,6 @@
 {
   "name": "Timeins Go Dev Container",
-  "dockerComposeFile": "../docker-compose.yml",
+  "dockerComposeFile": "../compose.yml",
   "service": "dev",
   "workspaceFolder": "/app",
   "shutdownAction": "stopCompose",
