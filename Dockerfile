@@ -2,7 +2,7 @@
 # 開発環境とプロダクション環境の両方に対応
 
 # 開発環境
-FROM golang:1.20 AS dev
+FROM golang:1.21 AS dev
 WORKDIR /app
 
 # 開発に必要なツールをインストール
@@ -25,7 +25,7 @@ COPY . .
 CMD ["make", "test"]
 
 # プロダクション環境用のビルドステージ
-FROM golang:1.20-alpine AS builder
+FROM golang:1.21-alpine AS builder
 WORKDIR /app
 
 # ビルドに必要な最小限のツールをインストール
