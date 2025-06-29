@@ -4,7 +4,7 @@
   "service": "dev",
   "workspaceFolder": "/app",
   "shutdownAction": "stopCompose",
-  
+
   // VS Code設定
   "customizations": {
     "vscode": {
@@ -18,7 +18,7 @@
         "editor.formatOnSave": true,
         "go.formatTool": "goimports"
       },
-      
+
       // 推奨拡張機能
       "extensions": [
         "golang.go",
@@ -29,21 +29,21 @@
       ]
     }
   },
-  
+
   // コンテナ作成後に実行するコマンド
   "postCreateCommand": "go mod download && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest",
-  
+
   // ポートフォワーディング（将来的にHTTPサーバーを追加する場合）
   "forwardPorts": [],
-  
+
   // リモートユーザー
   "remoteUser": "root",
-  
+
   // マウント設定
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
   ],
-  
+
   // 環境変数
   "containerEnv": {
     "GO111MODULE": "on",

@@ -77,19 +77,19 @@ GitHub Actionsがプッシュごとに自動実行：
 ### 開発手順
 1. issueを作成または選択
 2. **必ず**mainブランチから適切な名前で新しいブランチを作成
-   ```bash
-   # まずmainブランチに切り替えて最新の状態に更新
-   git checkout main
-   git pull origin main
-  
-   # 新しいブランチを作成
-   git checkout -b feature/your-feature-name
-   ```
+  ```bash
+  # まずmainブランチに切り替えて最新の状態に更新
+  git checkout main
+  git pull origin main
+
+  # 新しいブランチを作成
+  git checkout -b feature/your-feature-name
+  ```
 3. 変更を実装し、テストとリントを実行
-   ```bash
-   make test
-   make lint
-   ```
+  ```bash
+  make test
+  make lint
+  ```
 4. コミットを作成（コミットメッセージは明確に）
 5. GitHubにプッシュしてPull Requestを作成
 6. CIがすべてパスすることを確認
@@ -128,7 +128,7 @@ Claude Code で PR を作成する際は、以下の設定を行ってくださ�
 gh pr create --title "日本語のタイトル" --body "日本語の本文" --assignee @me --label "Claude Code"
 ```
 
-**注意**: 
+**注意**:
 - PRのタイトルと説明文は必ず日本語で記載してください
 - GitHub CopilotのレビュワーはCLIから設定できないため、PR作成後にWeb UIで手動追加してください
 - **PR作成後に追加変更を行った場合は、必ずPRの説明文を更新してください**
