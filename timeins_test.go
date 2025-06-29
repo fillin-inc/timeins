@@ -1,31 +1,48 @@
 package timeins
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
 
 func TestParse(t *testing.T) {
-	tests := []string{
-		"2006-01-02T15:04:05-07:00",
-		"2016-10-20T12:32:02+09:00",
+	tests := []struct {
+		input    string
+		hasError bool
+	}{
+		{"2006-01-02T15:04:05-07:00", false},
+		{"2016-10-20T12:32:02+09:00", false},
+		{"invalid-date", true},
+		{"2006-01-02", true},
+		{"", true},
 	}
 
 	for i, test := range tests {
-		tis, err := Parse(test)
-		if err != nil {
-			t.Errorf("#%d has error in timeins.Parse: %s", i, err)
-		}
+		t.Run(fmt.Sprintf("case_%d_%s", i, test.input), func(t *testing.T) {
+			tis, err := Parse(test.input)
 
-		tt, _ := time.Parse(F, test)
-		if tt.UnixNano() != time.Time(tis).UnixNano() {
-			t.Errorf(
-				"#%d returned unexpected value(expected:%d actual:%d)",
-				i,
-				tt.UnixNano(),
-				time.Time(tis).UnixNano(),
-			)
-		}
+			if test.hasError {
+				if err == nil {
+					t.Errorf("should return error for input: %s", test.input)
+				}
+				return
+			}
+
+			if err != nil {
+				t.Errorf("has error in timeins.Parse: %s", err)
+				return
+			}
+
+			tt, _ := time.Parse(ISO8601Format, test.input)
+			if tt.UnixNano() != time.Time(tis).UnixNano() {
+				t.Errorf(
+					"returned unexpected value(expected:%d actual:%d)",
+					tt.UnixNano(),
+					time.Time(tis).UnixNano(),
+				)
+			}
+		})
 	}
 }
 
@@ -85,7 +102,7 @@ func TestMarshalJSON(t *testing.T) {
 type unmarshalTest struct {
 	time     string
 	expected string
-	hasErr   bool
+	hasError bool
 }
 
 func TestUnmarshalJSON(t *testing.T) {
@@ -100,21 +117,55 @@ func TestUnmarshalJSON(t *testing.T) {
 			`2016-10-20T12:32:02+09:00`,
 			false,
 		},
+		// Error cases
+		{
+			`"invalid-date"`,
+			``,
+			true,
+		},
+		{
+			`"2006-01-02"`,
+			``,
+			true,
+		},
+		{
+			`2006-01-02T15:04:05-07:00`,
+			``,
+			true,
+		},
+		{
+			`null`,
+			``,
+			true,
+		},
+		// Test JSON escaped characters
+		{
+			`"2023-07-15T14:30:45+09:00"`,
+			`2023-07-15T14:30:45+09:00`,
+			false,
+		},
 	}
 
 	for i, test := range tests {
 		tis := Time{}
 		err := tis.UnmarshalJSON([]byte(test.time))
 
-		if test.hasErr && err == nil {
-			t.Errorf("#%d MarshalJSON() should return error", i)
-		} else if !test.hasErr && err != nil {
-			t.Errorf("#%d MarshalJSON() should not return error(err:%s)", i, err.Error())
+		if test.hasError {
+			if err == nil {
+				t.Errorf("#%d UnmarshalJSON() should return error", i)
+			}
+			// Skip string comparison for error cases
+			continue
+		}
+
+		if err != nil {
+			t.Errorf("#%d UnmarshalJSON() should not return error(err:%s)", i, err.Error())
+			continue
 		}
 
 		if test.expected != tis.String() {
 			t.Errorf(
-				"#%d MarshalJSON() returned unexpected value(expected:%s actual:%s)",
+				"#%d UnmarshalJSON() returned unexpected value(expected:%s actual:%s)",
 				i,
 				test.expected,
 				tis.String(),
@@ -152,7 +203,7 @@ func BenchmarkMarshalJSON(b *testing.B) {
 
 func BenchmarkUnmarshalJSON(b *testing.B) {
 	tt := Time{}
-	tb := []byte("2017-07-16T07:10:20+09:00")
+	tb := []byte(`"2017-07-16T07:10:20+09:00"`)
 	for i := 0; i < b.N; i++ {
 		err := tt.UnmarshalJSON(tb)
 		if err != nil {

@@ -28,7 +28,7 @@ func TestStructToJSON(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		tt, _ := time.Parse(F, test.time)
+		tt, _ := time.Parse(ISO8601Format, test.time)
 		ts := ts1{
 			CreatedAt: Time(tt),
 		}

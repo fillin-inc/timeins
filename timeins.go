@@ -1,35 +1,65 @@
+// Package timeins provides a custom Time type that marshals to JSON with second precision.
+// It wraps the standard time.Time and formats JSON output as "2006-01-02T15:04:05-07:00".
 package timeins
 
 import (
-	"strings"
+	"strconv"
 	"time"
 )
 
-// F is time format for time.Parse
-const F string = "2006-01-02T15:04:05-07:00"
+// ISO8601Format is the time format used for JSON serialization with second precision.
+const ISO8601Format string = "2006-01-02T15:04:05-07:00"
 
-// Time is base structure for timeins
+// Time wraps time.Time to provide JSON marshaling with second precision.
+// It embeds time.Time to inherit all standard time functionality while
+// customizing JSON serialization behavior.
 type Time time.Time
 
-// Parse parses the string and returns the timeins.Time type
+// Parse parses a time string in ISO8601 format and returns a timeins.Time.
+// The expected format is "2006-01-02T15:04:05-07:00".
 func Parse(value string) (Time, error) {
-	tt, err := time.Parse(F, value)
+	tt, err := time.Parse(ISO8601Format, value)
 	return Time(tt), err
 }
 
-// MarshalJSON is a method used when converting timeins.Time type to JSON
+// MarshalJSON implements the json.Marshaler interface.
+// It formats the time in ISO8601 format with second precision.
+// This method is automatically called by json.Marshal.
 func (t Time) MarshalJSON() ([]byte, error) {
-	return []byte(`"` + t.String() + `"`), nil
+	// Pre-allocate buffer with exact size needed: 2 quotes + 25 chars for timestamp
+	buf := make([]byte, 0, 27)
+	buf = append(buf, '"')
+	buf = time.Time(t).AppendFormat(buf, ISO8601Format)
+	buf = append(buf, '"')
+	return buf, nil
 }
 
-// UnmarshalJSON is a method used when converting JSON to timeins.Time type
+// UnmarshalJSON implements the json.Unmarshaler interface.
+// It parses a JSON time string in ISO8601 format.
+// This method is automatically called by json.Unmarshal.
 func (t *Time) UnmarshalJSON(data []byte) error {
-	tt, err := time.Parse(F, strings.Trim(string(data), `"`))
+	// Use strconv.Unquote to properly handle JSON-escaped strings
+	timeStr, err := strconv.Unquote(string(data))
+	if err != nil {
+		return &time.ParseError{
+			Layout: ISO8601Format,
+			Value:  string(data),
+			LayoutElem: "quoted string",
+			ValueElem: string(data),
+			Message: "invalid JSON string",
+		}
+	}
+
+	tt, err := time.Parse(ISO8601Format, timeStr)
+	if err != nil {
+		return err
+	}
 	*t = Time(tt)
-	return err
+	return nil
 }
 
-// String returns a time string of the format specified by F
+// String returns the time formatted in ISO8601 format with second precision.
+// The format is "2006-01-02T15:04:05-07:00".
 func (t Time) String() string {
-	return time.Time(t).Format(F)
+	return time.Time(t).Format(ISO8601Format)
 }

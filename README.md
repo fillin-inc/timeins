@@ -15,7 +15,7 @@ go get github.com/fillin-inc/timeins
 
 ## Requirements
 
-- Go 1.20 or later
+- Go 1.21 or later
 
 ## Usage
 
@@ -135,12 +135,11 @@ func main() {
 - `(t Time) String() string` - Returns formatted time string
 - `(t Time) MarshalJSON() ([]byte, error)` - JSON marshaler
 - `(t *Time) UnmarshalJSON(data []byte) error` - JSON unmarshaler
-
 ## Development
 
 ### Prerequisites
 
-- Go 1.20 or later
+- Go 1.21 or later
 - Make (optional, for convenience commands)
 
 ### Commands
