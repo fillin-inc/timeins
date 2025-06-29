@@ -1,18 +1,5 @@
 // Package timeins provides a custom Time type that marshals to JSON with second precision.
 // It wraps the standard time.Time and formats JSON output as "2006-01-02T15:04:05-07:00".
-//
-// Example usage:
-//
-//	type Response struct {
-//		CreatedAt timeins.Time `json:"created_at"`
-//	}
-//
-//	r := Response{
-//		CreatedAt: timeins.Time(time.Now()),
-//	}
-//
-//	jsonData, _ := json.Marshal(r)
-//	// Output: {"created_at":"2023-07-15T14:30:45+09:00"}
 package timeins
 
 import (
@@ -30,13 +17,6 @@ type Time time.Time
 
 // Parse parses a time string in ISO8601 format and returns a timeins.Time.
 // The expected format is "2006-01-02T15:04:05-07:00".
-//
-// Example:
-//
-//	t, err := timeins.Parse("2023-07-15T14:30:45+09:00")
-//	if err != nil {
-//		log.Fatal(err)
-//	}
 func Parse(value string) (Time, error) {
 	tt, err := time.Parse(ISO8601Format, value)
 	return Time(tt), err
