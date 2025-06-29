@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # 開発環境用サービス
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: make test
+    environment:
+      - GO111MODULE=on
+      - CGO_ENABLED=0
+    stdin_open: true
+    tty: true
+
+  # テスト実行用サービス
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: make test
+    environment:
+      - GO111MODULE=on
+      - CGO_ENABLED=0
+
+  # リント実行用サービス
+  lint:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: make lint
+    environment:
+      - GO111MODULE=on
+      - CGO_ENABLED=0
+
+  # ベンチマーク実行用サービス
+  benchmark:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: make benchmark
+    environment:
+      - GO111MODULE=on
+      - CGO_ENABLED=0
