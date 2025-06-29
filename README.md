@@ -25,40 +25,40 @@ go get github.com/fillin-inc/timeins
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"log"
-	"time"
+  "encoding/json"
+  "fmt"
+  "log"
+  "time"
 
-	"github.com/fillin-inc/timeins"
+  "github.com/fillin-inc/timeins"
 )
 
 type Response struct {
-	CreatedAt  timeins.Time `json:"created_at"`
-	UpdatedAt  timeins.Time `json:"updated_at"`
+  CreatedAt  timeins.Time `json:"created_at"`
+  UpdatedAt  timeins.Time `json:"updated_at"`
 }
 
 func main() {
-	r := Response{
-		CreatedAt: timeins.Time(time.Now()),
-		UpdatedAt: timeins.Time(time.Now().Add(time.Hour)),
-	}
+  r := Response{
+    CreatedAt: timeins.Time(time.Now()),
+    UpdatedAt: timeins.Time(time.Now().Add(time.Hour)),
+  }
 
-	// Marshal to JSON
-	data, err := json.Marshal(r)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(string(data))
-	// Output: {"created_at":"2023-07-15T14:30:45+09:00","updated_at":"2023-07-15T15:30:45+09:00"}
+  // Marshal to JSON
+  data, err := json.Marshal(r)
+  if err != nil {
+    log.Fatal(err)
+  }
+  fmt.Println(string(data))
+  // Output: {"created_at":"2023-07-15T14:30:45+09:00","updated_at":"2023-07-15T15:30:45+09:00"}
 
-	// Unmarshal from JSON
-	var result Response
-	err = json.Unmarshal(data, &result)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Created: %s\n", result.CreatedAt.String())
+  // Unmarshal from JSON
+  var result Response
+  err = json.Unmarshal(data, &result)
+  if err != nil {
+    log.Fatal(err)
+  }
+  fmt.Printf("Created: %s\n", result.CreatedAt.String())
 }
 ```
 
@@ -68,19 +68,19 @@ func main() {
 package main
 
 import (
-	"fmt"
-	"log"
+  "fmt"
+  "log"
 
-	"github.com/fillin-inc/timeins"
+  "github.com/fillin-inc/timeins"
 )
 
 func main() {
-	// Parse ISO8601 time string
-	t, err := timeins.Parse("2023-07-15T14:30:45+09:00")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(t.String()) // 2023-07-15T14:30:45+09:00
+  // Parse ISO8601 time string
+  t, err := timeins.Parse("2023-07-15T14:30:45+09:00")
+  if err != nil {
+    log.Fatal(err)
+  }
+  fmt.Println(t.String()) // 2023-07-15T14:30:45+09:00
 }
 ```
 
@@ -92,25 +92,25 @@ The package provides proper error handling for invalid time formats:
 package main
 
 import (
-	"fmt"
-	"log"
+  "fmt"
+  "log"
 
-	"github.com/fillin-inc/timeins"
+  "github.com/fillin-inc/timeins"
 )
 
 func main() {
-	// This will return an error
-	_, err := timeins.Parse("invalid-date")
-	if err != nil {
-		fmt.Printf("Parse error: %v\n", err)
-	}
+  // This will return an error
+  _, err := timeins.Parse("invalid-date")
+  if err != nil {
+    fmt.Printf("Parse error: %v\n", err)
+  }
 
-	// JSON unmarshaling also handles errors
-	var t timeins.Time
-	err = t.UnmarshalJSON([]byte(`"invalid-date"`))
-	if err != nil {
-		fmt.Printf("Unmarshal error: %v\n", err)
-	}
+  // JSON unmarshaling also handles errors
+  var t timeins.Time
+  err = t.UnmarshalJSON([]byte(`"invalid-date"`))
+  if err != nil {
+    fmt.Printf("Unmarshal error: %v\n", err)
+  }
 }
 ```
 
