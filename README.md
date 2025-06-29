@@ -33,6 +33,10 @@ func main() {
 }
 ```
 
+## Requirements
+
+- Go 1.21 or later
+
 ## Development
 
 This project uses `.editorconfig` to maintain consistent coding styles across different editors and IDEs. Most modern editors support EditorConfig automatically or through plugins.
