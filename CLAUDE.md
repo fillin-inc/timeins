@@ -119,12 +119,15 @@ GitHub Actionsがプッシュごとに自動実行：
 
 Claude Code で PR を作成する際は、以下の設定を行ってください:
 
+* **タイトルと本文は日本語で記載する**
 * Assignee に作業者を追加（pushしたユーザーとPRの作業者を一致させる）
 * label に `Claude Code` を追加
 * GitHub Copilot をレビュワーとして追加（Web UIで手動設定）
 
 ```bash
-gh pr create --title "タイトル" --body "本文" --assignee @me --label "Claude Code"
+gh pr create --title "日本語のタイトル" --body "日本語の本文" --assignee @me --label "Claude Code"
 ```
 
-**注意**: GitHub CopilotのレビュワーはCLIから設定できないため、PR作成後にWeb UIで手動追加してください。
+**注意**: 
+- PRのタイトルと説明文は必ず日本語で記載してください
+- GitHub CopilotのレビュワーはCLIから設定できないため、PR作成後にWeb UIで手動追加してください
