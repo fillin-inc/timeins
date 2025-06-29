@@ -66,7 +66,7 @@ func (t *Time) UnmarshalJSON(data []byte) error {
 			ValueElem: string(data),
 		}
 	}
-	
+
 	tt, err := time.Parse(ISO8601Format, strings.Trim(string(data), `"`))
 	if err != nil {
 		return err

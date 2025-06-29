@@ -19,14 +19,14 @@ func TestParse(t *testing.T) {
 
 	for i, test := range tests {
 		tis, err := Parse(test.input)
-		
+
 		if test.hasError {
 			if err == nil {
 				t.Errorf("#%d should return error for input: %s", i, test.input)
 			}
 			continue
 		}
-		
+
 		if err != nil {
 			t.Errorf("#%d has error in timeins.Parse: %s", i, err)
 			continue
@@ -149,7 +149,7 @@ func TestUnmarshalJSON(t *testing.T) {
 			// Skip string comparison for error cases
 			continue
 		}
-		
+
 		if err != nil {
 			t.Errorf("#%d UnmarshalJSON() should not return error(err:%s)", i, err.Error())
 			continue
